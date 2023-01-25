@@ -7,25 +7,26 @@ let advise = ref();
 let advises = new Array;
 let advise_list = ref()
 let time: number = 0;
-let index: number = 1;
+let count_index: number = 1;
 let version: number = 2;
 let mtime: number = 1674482318;
 let video_name: string = "DEENO三维场景视频";
+let video_src: string = "../video/1.mp4"
 
 const player = ref<HTMLVideoElement>();
 const themeOverrides = {
   common: {
-    primaryColor: "#6E7FF3",
-    primaryColorHover: "#6E7FF3"
+    primaryColor: "#517fa4",
+    primaryColorHover: "#517fa4"
   },
 }
 
 function enter() {
   if (advise.value.length != 0) {
     time = player.value?.currentTime as number;
-    var data = { "index": index, "time": time, "suggest": advise.value, "duration": 1 };
+    var data = { "index": count_index, "time": time, "suggest": advise.value, "duration": 1 };
     advises.push(data);
-    index++;
+    count_index++;
   }
   advise.value = "";
 };
@@ -37,16 +38,14 @@ function rowclick(i: any) {
 
 function del(i: any) {
   advises.forEach(j => {
-    if (i["time"] == j["time"]) {
+    if (i["index"] == j["index"]) {
       advises.splice(advises.indexOf(j), 1);
-      index--;
+      count_index--;
     }
   });
-
   advise.value = "111111"
   advise.value = ""
 };
-
 
 </script>
 
@@ -74,7 +73,7 @@ function del(i: any) {
             </div>
 
           </div>
-          <video src="../video/1.mp4" type="video/mp4" ref="player" controls class="video"></video>
+          <video :src=video_src type="video/mp4" ref="player" controls class="video"></video>
           <div class="input_area">
             <n-input type="text" class="input_revise" v-model:value="advise" placeholder="请输入修改意见" round clearable>
               <template #prefix>
@@ -82,10 +81,8 @@ function del(i: any) {
                   <BookmarksOutline />
                 </n-icon>
               </template>
-              <template #suffix>
-                <n-button @click="enter" class="enter" color="#5753C9" strong round>确定</n-button>
-              </template>
             </n-input>
+            <n-button @click="enter" class="enter" color="#243949" strong round>确定</n-button>
           </div>
         </div>
         <div class="advise_list">
@@ -93,7 +90,7 @@ function del(i: any) {
             <n-icon :component="PodiumOutline" :size="20" class="count_icon">
               <PodiumOutline />
             </n-icon>
-            当前建议数量：{{ index- 1 }}
+            当前内容数量：{{ count_index- 1 }}
           </div>
           <n-table class="table is-hoverable" :bordered="false">
             <thead>
