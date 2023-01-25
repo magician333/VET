@@ -1,65 +1,40 @@
-<script lang="ts" >
+<script setup lang="ts" >
 import { NConfigProvider, GlobalThemeOverrides, NButton, NCard, NTable, NInput, NIcon, NEllipsis, NTime } from 'naive-ui'
 import { TrashOutline, BookmarksOutline, PricetagOutline, CalendarOutline, PodiumOutline } from "@vicons/ionicons5";
-import { ref, version } from 'vue';
+import { ref } from 'vue';
 
+let advise = "";
+let advises = new Array;
+let time = 0;
+let index = 1;
+let version = 2;
+let mtime = 1674482318;
+const player = ref<HTMLVideoElement>();
 
-
-export default {
-  data() {
-    return {
-      advise: "",
-      advises: new Array,
-      time: 0,
-      index: 1,
-      version: 2,
-      mtime: 1674482318,
-      // player: ref<HTMLVideoElement | null>(null)
-    }
-  },
-  methods: {
-    enter() {
-      var comment = this.advise.trim()
-      if (comment.length != 0) {
-        const player = ref<HTMLVideoElement>();
-        console.log(player)
-        this.time = player.value?.currentTime as number
-        // this.time = this.$refs["player"].currentTime
-        var data = { "index": this.index, "time": this.time, "suggest": this.advise, "duration": 1 }
-        this.advises.push(data)
-        this.index++
-      }
-      this.advise = ""
-    },
-    rowclick(i: any) {
-      let player = ref<HTMLVideoElement | null>(null)
-      player.value!.currentTime = i["time"]
-      // this.$refs["player"].currentTime = i["time"]
-    },
-    del(i: any) {
-      this.advises.forEach(j => {
-        if (i["time"] == j["time"]) {
-          this.advises.splice(this.advises.indexOf(j), 1)
-          this.index--
-        }
-      });
-    }
-  },
-  components: {
-    NButton,
-    NCard,
-    NTable,
-    NInput,
-    NIcon,
-    TrashOutline,
-    NEllipsis,
-    NTime,
-    BookmarksOutline,
-    PricetagOutline,
-    CalendarOutline,
-    PodiumOutline,
+function enter() {
+  console.log(player.value)
+  var comment = advise.trim()
+  if (comment.length != 0) {
+    time = player.value?.currentTime as number
+    var data = { "index": index, "time": time, "suggest": advise, "duration": 1 }
+    advises.push(data)
+    index++
   }
-}
+  advise = ""
+};
+function rowclick(i: any) {
+  let player = ref<HTMLVideoElement | null>(null)
+  player.value!.currentTime = i["time"]
+
+};
+function del(i: any) {
+  advises.forEach(j => {
+    if (i["time"] == j["time"]) {
+      advises.splice(advises.indexOf(j), 1)
+      index--
+    }
+  });
+};
 </script>
 
 <template>
@@ -85,10 +60,9 @@ export default {
             </div>
 
           </div>
-          <div ref="player"></div>
-          <!-- <video src="../video/1.mp4" type="video/mp4" ref="player" controls class="video"></video> -->
+          <video src="../video/1.mp4" type="video/mp4" ref="player" controls class="video"></video>
           <div class="input_area">
-            <n-input type="text" class="input_revise" v-model:value="advise" placeholder="请输入修改意见" round clearable>
+            <n-input type="text" class="input_revise" v-model="advise" placeholder="请输入修改意见" round clearable>
               <template #prefix>
                 <n-icon :component="BookmarksOutline">
                   <BookmarksOutline />
