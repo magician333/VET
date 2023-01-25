@@ -1,50 +1,64 @@
-<script setup lang="ts" >
-import { NConfigProvider, GlobalThemeOverrides, NButton, NCard, NTable, NInput, NIcon, NEllipsis, NTime } from 'naive-ui'
+<script setup lang="ts">
+import { NConfigProvider, NButton, NCard, NTable, NInput, NIcon, NEllipsis, NTime } from 'naive-ui'
 import { TrashOutline, BookmarksOutline, PricetagOutline, CalendarOutline, PodiumOutline } from "@vicons/ionicons5";
 import { ref } from 'vue';
 
-let advise = "";
+let advise = ref();
 let advises = new Array;
-let time = 0;
-let index = 1;
-let version = 2;
-let mtime = 1674482318;
+let advise_list = ref()
+let time: number = 0;
+let index: number = 1;
+let version: number = 2;
+let mtime: number = 1674482318;
+let video_name: string = "DEENO三维场景视频";
+
 const player = ref<HTMLVideoElement>();
+const themeOverrides = {
+  common: {
+    primaryColor: "#6E7FF3",
+    primaryColorHover: "#6E7FF3"
+  },
+}
 
 function enter() {
-  console.log(player.value)
-  var comment = advise.trim()
-  if (comment.length != 0) {
-    time = player.value?.currentTime as number
-    var data = { "index": index, "time": time, "suggest": advise, "duration": 1 }
-    advises.push(data)
-    index++
+  if (advise.value.length != 0) {
+    time = player.value?.currentTime as number;
+    var data = { "index": index, "time": time, "suggest": advise.value, "duration": 1 };
+    advises.push(data);
+    index++;
   }
-  advise = ""
+  advise.value = "";
 };
+
 function rowclick(i: any) {
-  let player = ref<HTMLVideoElement | null>(null)
-  player.value!.currentTime = i["time"]
+  player.value!.currentTime = i["time"];
 
 };
+
 function del(i: any) {
   advises.forEach(j => {
     if (i["time"] == j["time"]) {
-      advises.splice(advises.indexOf(j), 1)
-      index--
+      advises.splice(advises.indexOf(j), 1);
+      index--;
     }
   });
+
+  advise.value = "111111"
+  advise.value = ""
 };
+
+
 </script>
 
 <template>
-  <n-config-provider>
+  <n-config-provider :theme-overrides="themeOverrides">
+
     <n-card class="content_area" :bordered="false">
       <div class="main_area">
         <div class="video_area">
           <div class="title_area">
             <div class="title_name">
-              <h1>DEENO三维场景视频</h1>
+              {{ video_name }}
             </div>
             <div class="title_version">
               <n-icon :component="PricetagOutline" :size="20" class="version_icon">
@@ -62,7 +76,7 @@ function del(i: any) {
           </div>
           <video src="../video/1.mp4" type="video/mp4" ref="player" controls class="video"></video>
           <div class="input_area">
-            <n-input type="text" class="input_revise" v-model="advise" placeholder="请输入修改意见" round clearable>
+            <n-input type="text" class="input_revise" v-model:value="advise" placeholder="请输入修改意见" round clearable>
               <template #prefix>
                 <n-icon :component="BookmarksOutline">
                   <BookmarksOutline />
@@ -91,18 +105,20 @@ function del(i: any) {
               </tr>
             </thead>
             <tbody>
-              <tr v-for="i in advises" @click="rowclick(i)">
+              <tr v-for="i in advises" @click="rowclick(i)" ref="advise_list">
                 <td>{{ i["index"] }}</td>
-                <td>{{ i['time']}}</td>
+                <td>{{ i['time'].toFixed(2) }}</td>
                 <td>
                   <n-ellipsis style="max-width:60px">
                     {{ i["suggest"] }}
                   </n-ellipsis>
                 </td>
-
-                <td><n-button @click="del(i)" text><n-icon :component="TrashOutline">
+                <td>
+                  <n-button @click="del(i)" text>
+                    <n-icon :component="TrashOutline">
                       <TrashOutline />
-                    </n-icon></n-button>
+                    </n-icon>
+                  </n-button>
                 </td>
               </tr>
             </tbody>
@@ -113,11 +129,4 @@ function del(i: any) {
 
     </n-card>
   </n-config-provider>
-
-
-
 </template>
-
-<style scoped>
-
-</style>
