@@ -1,7 +1,6 @@
 #app {
   margin-left: 50px;
-  margin-top: 20px;
-
+  /* margin-top: 20px; */
 }
 
 body {
@@ -15,27 +14,28 @@ body {
   flex-direction: column;
   /* justify-content: center;
   align-self: flex-start; */
-  width: 90%;
-  padding: 20px;
+  width: 80%;
+  padding-bottom: 10px;
+  padding-left: 30px;
+  padding-right: 30px;
   margin: 0 auto;
-  margin-top: 20px;
-  margin-bottom: 30px;
+  margin-top: 50px;
   background-color: rgb(246, 246, 246);
   border-radius: 17px;
   box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5);
+  height: auto;
 }
 
 .main_area {
   display: flex;
   flex-direction: row;
-  width: 96%;
 }
 
 .title_area {
   display: flex;
   flex-direction: row;
   align-items: flex-end;
-  margin-bottom: 10px;
+
 }
 
 .video_name {
@@ -49,17 +49,6 @@ body {
   flex-direction: row;
   align-items: center;
   margin-right: 30px;
-}
-
-
-
-.version_icon {
-  margin-left: 20px;
-  margin-right: 5px;
-}
-
-.date_icon {
-  margin-right: 5px;
 }
 
 .count_icon {
@@ -78,27 +67,52 @@ body {
   color: rgb(118, 118, 118);
 }
 
+.title_name {
+  font-size: 30px;
+  margin-top: 30px;
+  margin-bottom: 5px;
+}
+
+
 .advise_list {
-  margin-left: 30px;
-  border-radius: 5px;
-  /* width: 100%; */
-  /* overflow: hidden; */
-  margin-right: 0px;
-  border-radius: 15px;
-  padding: 20px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  margin-left: 20px;
+  width: 100%;
+  /* margin-bottom: 30px; */
+  overflow: hidden;
+}
+
+.video_info {
+  display: flex;
+  flex-direction: row;
+  width: auto;
+  background-color: rgb(246, 246, 246);
+  /* box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5); */
+  /* padding: 5px;*/
+  padding-left: 15px;
+  margin-top: 16px;
+  margin-bottom: 10px;
+}
+
+.v_duration,
+.v_rr,
+.v_note {
+  font-size: 12px;
+  margin-right: 20px;
 }
 
 .advise_head {
   display: flex;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: 30px;
+  margin-top: 56px;
 }
 
-.table {
-  border-radius: 5px;
-  background: transparent;
-  width: 280px;
+.timeline {
+  height: 580px;
+  overflow: scroll;
+
 }
 
 .video_area {
@@ -112,13 +126,13 @@ body {
 .video {
   border-radius: 5px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+  margin-bottom: 30px;
 }
 
+
 .input_area {
-  margin-top: 30px;
   display: flex;
   border-radius: 17px;
-
 }
 
 .input_revise {
@@ -129,6 +143,18 @@ body {
 }
 
 .enter {
-  width: 6%;
+  width: 8%;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+.export {
+  margin: 0 auto;
+  margin-top: 24px;
+  margin-bottom: 10px;
+  width: 60%;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+}
+
+.del_advise {
+  float: right;
 }
