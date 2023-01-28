@@ -18,15 +18,17 @@ import {
 } from "@vicons/ionicons5";
 
 import { onMounted, ref } from 'vue';
+import axios from "axios";
 
 let advise = ref();
 let advises = new Array;
 let time: number = 0;
 let count_index: number = 1;
-let video_name: string = "DEENO三维场景视频";
-let video_src: string = "http://127.0.0.1:8080/get_video";
+let video_name: string = "Video Name";
+let video_src: string = "#";
 let play_status: number = 0; //0:pause 1:playing
 
+const url: string = "http://localhost:8080/"
 const player = ref<HTMLVideoElement>();
 const v_duration = ref<HTMLDivElement>();
 const v_rr = ref<HTMLDivElement>();
@@ -38,7 +40,15 @@ onMounted(() => {
     v_duration.value!.textContent = "时长：" + this.duration;
     v_rr.value!.textContent = "分辨率：" + this.videoWidth + "*" + this.videoHeight;
     v_note.value!.textContent = "备注：" + "无";
-  }, false)
+  }, false);
+
+  axios.get(url + "get_video").then((res: any) => {
+    video_src = url + res.data["video_src"]
+    video_name = res.data["video_name"]
+    console.log(res.data["video_name"])
+    advise.value = " "
+    advise.value = ""
+  });
 })
 
 const themeOverrides = {
@@ -110,7 +120,7 @@ function videotimeupdate() {
   player.value?.addEventListener("timeupdate", function () {
     advises.forEach(i => {
       if (i["time"] == this.currentTime) {
-        advise.value = i["advise"]；
+        advise.value = i["advise"];
       }
     });
 
@@ -118,7 +128,7 @@ function videotimeupdate() {
 }
 
 function export_data() {
-  alert("功能暂未开放")；
+  alert("功能暂未开放");
 }
 </script>
 
