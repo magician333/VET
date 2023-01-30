@@ -45,10 +45,21 @@ onMounted(() => {
   axios.get(url + "get_video").then((res: any) => {
     video_src = url + res.data["video_src"]
     video_name = res.data["video_name"]
-    console.log(res.data["video_name"])
     advise.value = " "
     advise.value = ""
   });
+
+  axios.get(url).then((res: any) => {
+    console.log(res.data);
+    (res.data).forEach((data: any) => {
+      advises.push(data);
+      count_index++
+    });
+    advise.value = " ";
+    advise.value = "";
+  });
+
+
 })
 
 const themeOverrides = {
@@ -61,11 +72,10 @@ const themeOverrides = {
 function enter() {
   if (advise.value.length != 0) {
     time = player.value?.currentTime as number;
-
     advises.forEach(i => {
       if (i["time"] == time) {
         advises.splice(advises.indexOf(i), 1);
-        advises = advises.sort((a, b) => a.time - b.time);
+
         advises.forEach(i => {
           i["index"] = advises.indexOf(i) + 1
         });
@@ -75,12 +85,18 @@ function enter() {
 
     var data = { "index": count_index, "time": time, "advise": advise.value };
     advises.push(data);
+    axios.post(url + "add_data", {
+      "data": data
+    }).then((res: any) => {
+      console.log(res.data)
+    })
     advises = advises.sort((a, b) => a.time - b.time);
     advises.forEach(i => {
       i["index"] = advises.indexOf(i) + 1
     });
     count_index++;
   }
+  advises = advises.sort((a, b) => a.time - b.time);
   advise.value = "";
 };
 
@@ -93,28 +109,22 @@ function del(i: any) {
   advises.forEach(j => {
     if (i["index"] == j["index"]) {
       advises.splice(advises.indexOf(j), 1);
-      advises = advises.sort((a, b) => a.time - b.time);
       advises.forEach(i => {
         i["index"] = advises.indexOf(i) + 1;
       });
-      count_index--;
     }
   });
-
+  //测试删除后重新添加排序是否正确
+  axios.post(url + "del_data", {
+    "del_index": i["index"]
+  }).then((res: any) => {
+    console.log(res)
+  });
+  advises = advises.sort((a, b) => a.time - b.time);
+  count_index--;
   advise.value = " ";
   advise.value = "";
 };
-
-function play_video() {
-  if (play_status == 0) {
-    player.value?.play();
-    play_status = 1;
-  }
-  else {
-    player.value?.pause();
-    play_status = 0;
-  }
-}
 
 function videotimeupdate() {
   player.value?.addEventListener("timeupdate", function () {
